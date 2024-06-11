@@ -1,0 +1,83 @@
+<div class="container">
+  <div class="button-back">
+    <button mat-raised-button color="primary" routerLink="/">Back</button>
+  </div>
+
+  <div class="loading-spinner" *ngIf="isLoading || isRateLimitReached">
+    <mat-spinner *ngIf="isLoading"></mat-spinner>
+    <div class="rate-limit-reached" *ngIf="isRateLimitReached">
+      {{ errorMessage }}
+      <br />
+      <a href="/">okay...</a>
+    </div>
+  </div>
+
+  <div class="mat-elevation-z8">
+    <cdk-virtual-scroll-viewport gridTableVirtualScroll itemSize="5">
+      <table
+        mat-table
+        [dataSource]="dataSource"
+        class="mat-elevation-z8"
+        matSort
+        matSortActive="created"
+        matSortDirection="desc"
+        (matSortChange)="onSortChange($event)"
+      >
+        <!-- COLUMN - CREATED -->
+        <ng-container matColumnDef="created">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            sortActionDescription="Sort by created date"
+          >
+            Created On
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.created_at | date : "M/d/yy" }}
+            <br />
+            {{ element.created_at | date : "h:mm:ss a" }}
+          </td>
+        </ng-container>
+
+        <!-- COLUMN - UPDATED -->
+        <ng-container matColumnDef="updated">
+          <th
+            mat-header-cell
+            *matHeaderCellDef
+            mat-sort-header
+            sortActionDescription="Sort by updated date"
+          >
+            Updated On
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.updated_at | date : "M/d/yy" }}
+            <br />
+            {{ element.updated_at | date : "h:mm:ss a" }}
+          </td>
+        </ng-container>
+
+        <!-- COLUMN - TITLE -->
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef>Title</th>
+          <td mat-cell *matCellDef="let element">{{ element.title }}</td>
+        </ng-container>
+
+        <tr
+          mat-header-row
+          *matHeaderRowDef="displayedColumns; sticky: true"
+        ></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </cdk-virtual-scroll-viewport>
+
+    <mat-paginator
+      #paginator
+      showFirstLastButtons
+      aria-label="Select page"
+      [length]="totalRecords"
+      [pageSize]="per_page"
+      (page)="onPageChange($event)"
+    ></mat-paginator>
+  </div>
+</div>

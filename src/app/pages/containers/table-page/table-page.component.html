@@ -1,0 +1,9 @@
+<app-table-list
+  [records]="$records"
+  [totalRecords]="totalRecords"
+  [isLoading]="isLoading"
+  [errorMessage]="errorMessage"
+  [isRateLimitReached]="isRateLimitReached"
+  (tableSort)="onSortChange($event)"
+  (tablePage)="onPageChange($event)"
+></app-table-list>
